@@ -1,12 +1,19 @@
 ﻿# Partial response
 
-A simple library that enables you to parse, interpret, serialize and build simple queries for **fields** and **filters** that could be used in building flexible REST endpoints (but not limited to API):
+A simple set of libraries that enables you to parse, interpret, serialize and build simple queries for **fields** and **filters** that could be used in building flexible REST endpoints (but not limited to API):
 `https://my-app.com/animals?fields=id,photoUrl,guardian{name}&filters=id(gt:5)`
 
 
 ## Quick start
 
-### Partial response
+### Response pruner
+
+![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.AspNetCore.ResponsePruner)
+
+Add a dependency using the NuGet package manager (console): 
+```
+Install-Package PartialResponseRequest.AspNetCore.ResponsePruner
+```
 
 Use `services.AddPartialResponse()` to add a custom json output formatter, that will search for `?fields=...` query string that would be used to prune the response for the client.
 ```csharp
@@ -18,6 +25,14 @@ public void ConfigureServices(IServiceCollection services)
 [Read more](./src/PartialResponseRequest.AspNetCore.ResponsePruner/README.md)
 
 ### Fields Queries
+
+![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.Fields)
+
+Add a dependency using the NuGet package manager (console):
+```
+Install-Package PartialResponseRequest.Fields
+```
+
 Allows you to parse **fields** query for processing/interpreting and reacting based on it, like building a custom optimized SQL query:
 ```csharp
 var parser = new FieldsQueryParser();
@@ -32,6 +47,14 @@ if(interpreter.Includes("id")) {
 [Read more](./src/PartialResponseRequest.Fields/README.md)
 
 ### Filters Queries
+
+![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.Filters)
+
+Add a dependency using the NuGet package manager (console):
+```
+Install-Package PartialResponseRequest.Filters
+```
+
 Allows you to parse **filters** query for processing/interpreting and reacing based on it, like building custom SQL query where clauses:
 ```csharp
 var parser = new FiltersQueryParser();
