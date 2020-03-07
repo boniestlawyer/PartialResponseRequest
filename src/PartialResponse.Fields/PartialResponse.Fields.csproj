@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Benas Radzevičius</Authors>
+    <Copyright>Copyright 2020 Benas Radzevičius</Copyright>
+    <Description>Library for parsing and managing fields queries</Description>
+    <PackageId>PartialResponse.Fields</PackageId>
+    <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/benasradzevicius9404/PartialResponse</PackageProjectUrl>
+    <PackageTags>aspnet;webapi;aspnetwebapi;web;api;json;partial;response;partialresponse;fields</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/benasradzevicius9404/PartialResponse</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PartialResponse.Core\PartialResponse.Core.csproj" />
+  </ItemGroup>
+
+</Project>

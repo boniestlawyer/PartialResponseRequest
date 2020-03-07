@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Authors>Benas Radzevičius</Authors>
+    <Copyright>Copyright 2020 Benas Radzevičius</Copyright>
+    <Description>Core Library for ASP.NET Web API JSON partial responses</Description>
+    <PackageId>PartialResponse.Core</PackageId>
+    <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/benasradzevicius9404/PartialResponse</PackageProjectUrl>
+    <PackageTags>aspnet;webapi;aspnetwebapi;web;api;json;partial;response;partialresponse;fields</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/benasradzevicius9404/PartialResponse</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
