@@ -22,7 +22,7 @@ public void ConfigureServices(IServiceCollection services)
     services.AddPartialResponse();
 }
 ```
-[Read more](./src/PartialResponseRequest.AspNetCore.ResponsePruner/README.md)
+[Read more](./src/PartialResponseRequest.AspNetCore.ResponsePruner)
 
 ### Fields Queries
 
@@ -44,7 +44,7 @@ if(interpreter.Includes("id")) {
     // include id field
 }
 ```
-[Read more](./src/PartialResponseRequest.Fields/README.md)
+[Read more](./src/PartialResponseRequest.Fields)
 
 ### Filters Queries
 
@@ -68,10 +68,10 @@ interpreter.HasField(x => x.Created, op => {
     });
 })
 ```
-[Read more](./src/PartialResponseRequest.Filters/README.md)
+[Read more](./src/PartialResponseRequest.Filters)
 
 ## Documentation
-View the documentation [here](./src/README.md)
+View the documentation [here](./src)
 
 ## Cake build tasks
 https://cakebuild.net/

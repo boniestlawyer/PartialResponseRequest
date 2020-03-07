@@ -1,4 +1,4 @@
-[< back](../README.md)
+[< back](../)
 # Filters Queries
 
 ## Syntax

@@ -1,4 +1,4 @@
-[< back](../README.md)
+[< back](../)
 # Partial response
 Register a custom json output formatter that is able to prune json results based on given `?fields=...` query string value. Internally it uses `FieldsQueryParser` and `FieldsQueryInterpreter` to parse and iterpret the query.
 
