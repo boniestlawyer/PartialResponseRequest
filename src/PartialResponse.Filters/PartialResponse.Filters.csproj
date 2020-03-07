@@ -8,7 +8,7 @@
     <Authors>Benas Radzevičius</Authors>
     <Copyright>Copyright 2020 Benas Radzevičius</Copyright>
     <Description>Library for parsing and managing filter queries</Description>
-    <PackageId>PartialResponse.Fields</PackageId>
+    <PackageId>PartialResponse.Filters</PackageId>
     <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/benasradzevicius9404/PartialResponse</PackageProjectUrl>
     <PackageTags>aspnet;webapi;aspnetwebapi;web;api;json;partial;response;partialresponse;filters</PackageTags>
