@@ -62,7 +62,7 @@ foreach(var project in packageProjects) {
                OutputDirectory = outputDirectory,
          };
 
-         DotNetCorePack($"./src/PartialResponse.{project}/PartialResponse.{project}.csproj", settings);
+         DotNetCorePack($"./src/PartialResponseRequest.{project}/PartialResponseRequest.{project}.csproj", settings);
       });
 
    packTask.IsDependentOn($"Pack-{project}");
@@ -70,7 +70,7 @@ foreach(var project in packageProjects) {
 
 Task("Build")
    .Does(() => {
-      DotNetCoreBuild("./src/PartialResponse.sln", new DotNetCoreBuildSettings(){
+      DotNetCoreBuild("./src/PartialResponseRequest.sln", new DotNetCoreBuildSettings(){
          Configuration = configuration
       });
    });
@@ -94,7 +94,7 @@ Task("Test")
         CoverletOutputName = opencoverFileResult
       };
 
-      var testProject = GetFiles("./src/PartialResponse.Tests/*.csproj").Select(x => x.FullPath).ToArray().First();
+      var testProject = GetFiles("./src/PartialResponseRequest.Tests/*.csproj").Select(x => x.FullPath).ToArray().First();
 
       var testSettings = new DotNetCoreTestSettings() { 
          Logger = $"trx;LogFileName={opencoverFileResult}.trx",
