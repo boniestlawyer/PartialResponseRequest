@@ -8,7 +8,7 @@ A simple set of libraries that enables you to parse, interpret, serialize and bu
 
 ### Response pruner
 
-![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.AspNetCore.ResponsePruner)
+[![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.AspNetCore.ResponsePruner)](https://www.nuget.org/packages/PartialResponseRequest.AspNetCore.ResponsePruner)
 
 Add a dependency using the NuGet package manager (console): 
 ```
@@ -26,7 +26,7 @@ public void ConfigureServices(IServiceCollection services)
 
 ### Fields Queries
 
-![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.Fields)
+[![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.Fields)](https://www.nuget.org/packages/PartialResponseRequest.Fields)
 
 Add a dependency using the NuGet package manager (console):
 ```
@@ -48,7 +48,7 @@ if(interpreter.Includes("id")) {
 
 ### Filters Queries
 
-![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.Filters)
+[![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.Filters)](https://www.nuget.org/packages/PartialResponseRequest.Filters)
 
 Add a dependency using the NuGet package manager (console):
 ```
