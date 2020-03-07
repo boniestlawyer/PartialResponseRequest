@@ -63,4 +63,4 @@ https://cakebuild.net/
 `build.ps1 --target=Report [--testResultsDirectory=./test-results/]`
 
 **Create nuget packages**
-`build.ps1 --target=Pack [--outputDirectory=./output] [--configuration=Release] [--version=1.0.0.0]`
+`build.ps1 --target=Pack [--outputDirectory=./output] [--configuration=Release] [--package-version=1.0.0.0]`
