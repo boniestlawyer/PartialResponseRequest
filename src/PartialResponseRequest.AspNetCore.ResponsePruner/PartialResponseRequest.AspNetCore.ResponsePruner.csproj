@@ -10,7 +10,7 @@
     <Description>ASP.NET Web API JSON output formatter for partial response</Description>
     <PackageId>PartialResponseRequest.AspNetCore.ResponsePruner</PackageId>
     <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/benasradzevicius9404/PartialResponse</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/benasradzevicius9404/PartialResponseRequest</PackageProjectUrl>
     <PackageTags>aspnet;webapi;aspnetwebapi;web;api;json;partial;response;partialresponse;fields</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/benasradzevicius9404/PartialResponse</RepositoryUrl>
