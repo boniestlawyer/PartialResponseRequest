@@ -15,7 +15,7 @@ public void ConfigureServices(IServiceCollection services)
     services.AddPartialResponse();
 }
 ```
-[Read more](./docs/partial_response.md)
+[Read more](./src/PartialResponseRequest.AspNetCore.ResponsePruner/README.md)
 
 ### Fields Queries
 Allows you to parse **fields** query for processing/interpreting and reacting based on it, like building a custom optimized SQL query:
@@ -29,7 +29,7 @@ if(interpreter.Includes("id")) {
     // include id field
 }
 ```
-[Read more](./docs/fields.md)
+[Read more](./src/PartialResponseRequest.Fields/README.md)
 
 ### Filters Queries
 Allows you to parse **filters** query for processing/interpreting and reacing based on it, like building custom SQL query where clauses:
@@ -45,10 +45,10 @@ interpreter.HasField(x => x.Created, op => {
     });
 })
 ```
-[Read more](./docs/filters.md)
+[Read more](./src/PartialResponseRequest.Filters/README.md)
 
 ## Documentation
-View the documentation [here](./docs/index.md)
+View the documentation [here](./src/README.md)
 
 ## Cake build tasks
 https://cakebuild.net/
