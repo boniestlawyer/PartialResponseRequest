@@ -30,6 +30,6 @@ Data flow between components:
 
 ## Scopes
 
-* [Fields](./fields.md)
-* [Filters](./filters.md)
-* [Partial response](./partial_response.md)
+* [Fields](./PartialResponseRequest.Fields)
+* [Filters](./PartialResponseRequest.Filters)
+* [Partial response](./PartialResponseRequest.AspNetCore.ResponsePruner)
