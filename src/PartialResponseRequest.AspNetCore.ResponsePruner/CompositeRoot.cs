@@ -14,7 +14,7 @@ namespace PartialResponseRequest.AspNetCore.ResponsePruner
 
     public static class CompositeRoot
     {
-        public static IServiceCollection AddPartialResponse(this IServiceCollection services, Action<PartialResponseOptions> optionsBuilder = null)
+        public static IServiceCollection AddResponsePruner(this IServiceCollection services, Action<PartialResponseOptions> optionsBuilder = null)
         {
             var options = new PartialResponseOptions()
             {

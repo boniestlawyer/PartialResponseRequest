@@ -1,5 +1,5 @@
 [< back](../)
-# Partial response
+# Response Pruner
 Register a custom json output formatter that is able to prune json results based on given `?fields=...` query string value. Internally it uses `FieldsQueryParser` and `FieldsQueryInterpreter` to parse and iterpret the query.
 
 If your result is:
@@ -33,13 +33,13 @@ given a query of `?fields=id,friends{id,name}` would result in:
 
 ## Usage
 
-Use `services.AddPartialResponse()` to add a custom json output formatter, that will search for `?fields=...` query string that would be used to prune the response for the client.
+Use `services.AddResponsePruner()` to add a custom json output formatter, that will search for `?fields=...` query string that would be used to prune the response for the client.
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
     // ...
 
-    services.AddPartialResponse();
+    services.AddResponsePruner();
 
     // ...
 }
@@ -52,7 +52,7 @@ public void ConfigureServices(IServiceCollection services)
     // ...
 
     // It also supports customization by providing options
-    services.AddPartialResponse(options =>
+    services.AddResponsePruner(options =>
     {
         // By default, JsonPruner implementation is used, but
         // if you API wraps the responses, you can override the default

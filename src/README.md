@@ -30,6 +30,6 @@ Data flow between components:
 
 ## Scopes
 
+* [Response Pruner](./PartialResponseRequest.AspNetCore.ResponsePruner)
 * [Fields](./PartialResponseRequest.Fields)
 * [Filters](./PartialResponseRequest.Filters)
-* [Partial response](./PartialResponseRequest.AspNetCore.ResponsePruner)
