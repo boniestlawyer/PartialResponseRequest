@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap 4 project documentation theme for developers</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">    
+    <link rel="shortcut icon" href="favicon.ico">  
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- FontAwesome JS -->
+    <script defer src="assets/fontawesome/js/all.js"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">   
+    <!-- Plugins CSS -->    
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">  
+      
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+    
+</head> 
+
+<body class="body-primary">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header">
+            <div class="container">
+                <div class="branding">
+                    <h1 class="logo">
+                        <a href="index.html">
+                            <span aria-hidden="true" class="icon_documents_alt icon"></span>
+                            <span class="text-highlight">Partial Response Request</span><span class="text-bold"> Docs</span>
+                        </a>
+                    </h1>
+                    
+                </div><!--//branding-->
+                
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Filters Queries</li>
+                </ol>
+                
+                <!-- <div class="top-search-box">
+	                 <form class="form-inline search-form justify-content-center" action="" method="get">
+	            
+			            <input type="text" placeholder="Search..." name="search" class="form-control search-input">
+			            
+			            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+			            
+			        </form>
+                </div> -->
+                
+            </div><!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <div id="doc-header" class="doc-header text-center">
+                    <h1 class="doc-title"><i class="icon fa fa-paper-plane"></i> Filters Queries</h1>
+                    <div class="meta"><i class="far fa-clock"></i> Last updated: June 13th, 2020</div>
+                </div><!--//doc-header-->
+                <div class="doc-body row">
+                    <div class="doc-content col-md-9 col-12 order-1">
+                        <div class="content-inner">
+                            <section id="filters-queries-section" class="doc-section">
+                                <h2 class="section-title">Filters Queries</h2>
+                                <div id="syntax" class="section-block">
+                                        <h3 class="block-title">Syntax</h3>
+                                        <div class="code-block">
+                                            <h6>Filtering by single field:</h6>
+                                            <p><code>id(gt:1)</code></p>
+                                            <h6>Filtering by multiple operators:</h6>
+                                            <p><code>id(gt:1,lt:10)</code></p>
+                                            <h6>Filtering by multiple Filters:</h6>
+                                            <p><code>id(gt:1,lt:10),status(in:"1,2,3")</code></p>
+                                        </div><!--//code-block-->
+                                    </div><!--//section-block-->
+                                    <div id="usage" class="section-block">
+                                            <h3 class="block-title">Usage</h3>
+                                            <div class="code-block">
+                                                    <h6>Using these interfaces in example:</h6>
+                                                    <pre><code class="language-dotnet">public interface IdFilters
+{
+    int Lt { get; }
+    int Gt { get; }
+}
+public interface StatusFilters
+{
+    string In { get; }
+}
+
+public interface OrderFilters
+{
+    IdFilters Id { get; }
+    StatusFilters Status { get; }
+}</code></pre>
+                                                    <h6>Use a parser with interpreter to start going:</h6>
+                                                    <pre><code class="language-dotnet">// Parsing
+var parser = new FiltersQueryParser();
+IEnumerable&#x3C;FilterToken&#x3E; result = parser.Parse(&#x22;id(gt:1,lt:10),status(in:\&#x22;1,2,3\&#x22;)&#x22;);
+
+// Or building tokens manually with strong type
+var builder = new FiltersQueryBuilder&#x3C;OrderFilters&#x3E;();
+List&#x3C;FilterToken&#x3E; builderResult = builder
+    .Filter(x =&#x3E; x.Id, x =&#x3E; x
+        .Operator(o =&#x3E; o.Gt, &#x22;1&#x22;)
+        .Operator(o =&#x3E; o.Lt, &#x22;10&#x22;))
+    .Filter(x =&#x3E; x.Status, x =&#x3E; x
+        .Operator(o =&#x3E; o.In, &#x22;\&#x22;1,2,3\&#x22;&#x22;))
+    .Build();
+
+// Interpreting
+var interpreter = new FiltersQueryInterpreter&#x3C;OrderFilters&#x3E;(result);
+if(interpreter.FiltersBy(x =&#x3E; x.Id, out var idOperators)) {
+    if(idOperators.HasOperator(x =&#x3E; x.Gt, out var gtValue)) {
+        Console.WriteLine(&#x22;Id should be after: {0}&#x22;, gtValue.Value);
+    }
+
+    if (idOperators.HasOperator(x =&#x3E; x.Lt, out var ltValue))
+    {
+        Console.WriteLine(&#x22;Id should be before: {0}&#x22;, ltValue.Value);
+    }
+}
+
+if (interpreter.FiltersBy(x =&#x3E; x.Status, out var statusOperators))
+{
+    if (statusOperators.HasOperator(x =&#x3E; x.In, out var inValue))
+    {
+        Console.WriteLine(&#x22;Status should in: {0}&#x22;, inValue.Value);
+    }
+}
+
+// Serialize back into string query
+var serializer = new FiltersQuerySerializer();
+string query = serializer.Serialize(result); // id(gt:1,lt:10),status(in:1,2,3)</code></pre></div><!--//section-block-->
+                                
+                                
+                            
+                            </section><!--//doc-section-->
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+                        <div id="doc-nav" class="doc-nav">
+	                        
+	                            <nav id="doc-menu" class="nav doc-menu flex-column sticky">
+	                                <a class="nav-link scrollto" href="#filters-queries-section">Filters Queries</a>
+                                    <nav class="doc-sub-menu nav flex-column">
+                                        <a class="nav-link scrollto" href="#syntax">Syntax</a>
+                                        <a class="nav-link scrollto" href="#usage">Usage</a>
+                                    </nav><!--//nav-->
+	                            </nav><!--//doc-menu-->
+	                        
+                        </div>
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->              
+            </div><!--//container-->
+        </div><!--//doc-wrapper-->
+    </div><!--//page-wrapper-->
+    
+    <footer id="footer" class="footer text-center">
+        <div class="container">
+            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+            <small class="copyright">Designed with <i class="fas fa-heart"></i> by <a href="https://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers</small>
+            
+        </div><!--//container-->
+    </footer><!--//footer-->
+    
+     
+    <!-- Main Javascript -->          
+    <script type="text/javascript" src="assets/plugins/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>    
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>      
+    <script type="text/javascript" src="assets/plugins/stickyfill/dist/stickyfill.min.js"></script>                                                             
+    <script type="text/javascript" src="assets/js/main.js"></script>
+    
+</body>
+</html> 
+

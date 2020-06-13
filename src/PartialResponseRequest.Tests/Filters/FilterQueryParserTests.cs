@@ -11,11 +11,11 @@ namespace PartialResponseRequest.Tests
 {
     public class FilterQueryParserTests
     {
-        private readonly FilterQueryParser root;
+        private readonly FiltersQueryParser root;
 
         public FilterQueryParserTests()
         {
-            root = new FilterQueryParser();
+            root = new FiltersQueryParser();
         }
 
         private List<FilterToken> Parse(string scan)

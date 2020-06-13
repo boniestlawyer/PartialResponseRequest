@@ -7,14 +7,13 @@ using System.Linq.Expressions;
 
 namespace PartialResponseRequest.Filters.Interpreters
 {
-
     public class OperatorsInterpreter<TFilter> : IOperatorsInterpreter<TFilter>
     {
         private readonly Dictionary<string, OperatorToken> operators;
 
         public OperatorsInterpreter(List<OperatorToken> operators)
         {
-            this.operators = operators.ToDictionary(x => x.Type);
+            this.operators = operators.ToDictionary(x => x.Type.ToLower());
         }
 
         public bool HasOperator<TProp>(Expression<Func<TFilter, TProp>> op)
@@ -24,18 +23,18 @@ namespace PartialResponseRequest.Filters.Interpreters
 
         public bool HasOperator(string op)
         {
-            return operators.ContainsKey(op);
+            return operators.ContainsKey(op.ToLower());
         }
 
-        public OperatorValue GetOperator<TProp>(Expression<Func<TFilter, TProp>> op)
+        public OperatorValue GetValue<TProp>(Expression<Func<TFilter, TProp>> op)
         {
-            return GetOperator(Utils.ToPascalCase(Utils.GetMemberName(op)));
+            return GetValue(Utils.ToPascalCase(Utils.GetMemberName(op)));
         }
 
-        public OperatorValue GetOperator(string op)
+        public OperatorValue GetValue(string op)
         {
             Type operatorType = typeof(TFilter).GetProperties().FirstOrDefault(x => x.Name.ToLower() == op.ToLower())?.PropertyType;
-            return new OperatorValue(operators[op].Value, operatorType);
+            return new OperatorValue(operators[op.ToLower()].Value, operatorType);
         }
     }
 }

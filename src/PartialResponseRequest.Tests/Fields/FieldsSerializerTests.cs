@@ -11,7 +11,7 @@ namespace PartialResponseRequest.Tests
         [Fact]
         public void SerializesFieldsTokensCorrectly()
         {
-            var serializer = new FieldsSerializer();
+            var serializer = new FieldsQuerySerializer();
 
             var result = serializer.Serialize(new List<FieldToken>()
             {

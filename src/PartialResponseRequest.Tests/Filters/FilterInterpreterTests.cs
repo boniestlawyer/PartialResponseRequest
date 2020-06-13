@@ -24,42 +24,21 @@ namespace PartialResponseRequest.Tests
         [Fact]
         public void CorrectlyInterpretsFilters()
         {
-            var interpreter = new FilterInterpreter<OrderFilters>(new List<FilterToken>()
+            var interpreter = new FiltersQueryInterpreter<OrderFilters>(new List<FilterToken>()
             {
                 new FilterToken("quantity", new List<OperatorToken>(){
                     new OperatorToken("lt", "5") })
             });
 
-            interpreter.HasFilter(x => x.Quantity2, (op) =>
-            {
-                Assert.True(false, "Quantity2 should not have been interpreted as existing");
-            });
+            interpreter.FiltersBy(x => x.Quantity).Should().BeTrue();
+            interpreter.FiltersBy(x => x.Quantity2).Should().BeFalse();
+            interpreter.GetFilter(x => x.Quantity2).HasOperator("lt").Should().BeFalse();
 
-            bool called = false;
-            interpreter.HasFilter(x => x.Quantity, (op) =>
-            {
-                called = true;
-                string val = "";
-                Type type = null;
-                op
-                    .HandleOperator(x => x.Lt, (v, t) => { val = v; type = t; })
-                    .HandleOperator(x => x.Gt, (v, t) =>
-                    {
-                        Assert.True(false, "gt should not have been interpreted as existing operator");
-                    });
+            var qOperators = interpreter.GetFilter(x => x.Quantity);
+            qOperators.HasOperator(x => x.Lt).Should().BeTrue();
+            qOperators.HasOperator(x => x.Gt).Should().BeFalse();
 
-                op.HasOperator("lt").Should().BeTrue();
-                op.HasOperator("gt").Should().BeFalse();
-                op.HasOperator(x => x.Lt).Should().BeTrue();
-                op.HasOperator(x => x.Gt).Should().BeFalse();
-
-                op.GetOperator(x => x.Lt).Should().BeEquivalentTo(new OperatorValue("5", typeof(int)));
-                op.GetOperator("lt").Should().BeEquivalentTo(new OperatorValue("5", typeof(int)));
-
-                val.Should().Be("5");
-                type.Should().Be(typeof(int));
-            });
-            called.Should().BeTrue();
+            qOperators.GetValue(x => x.Lt).Should().BeEquivalentTo(new OperatorValue("5", typeof(int)));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace PartialResponseRequest.Tests
         [Fact]
         public void ShouldGenerateFilterQueryCorrectly()
         {
-            var builder = new FilterQueryBuilder<OrderFilter>();
+            var builder = new FiltersQueryBuilder<OrderFilter>();
 
             var result = builder.Filter(x => x.Sum, x => x
                 .Operator(o => o.Gt, "5")
@@ -43,7 +43,7 @@ namespace PartialResponseRequest.Tests
         [Fact]
         public void ShouldGenerateFilterQueryCorrectly_WhenOperatorsNotBuilt()
         {
-            var builder = new FilterQueryBuilder<OrderFilter>();
+            var builder = new FiltersQueryBuilder<OrderFilter>();
 
             var result = builder.Filter(x => x.Sum).Build();
 

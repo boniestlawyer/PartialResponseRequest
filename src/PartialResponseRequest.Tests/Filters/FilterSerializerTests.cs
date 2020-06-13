@@ -11,7 +11,7 @@ namespace PartialResponseRequest.Tests
         [Fact]
         public void SerializesFilterTokensCorrectly()
         {
-            var serializer = new FiltersSerializer();
+            var serializer = new FiltersQuerySerializer();
 
             var result = serializer.Serialize(new List<FilterToken>()
             {
