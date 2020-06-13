@@ -1,4 +1,11 @@
-﻿# Partial response
+[![Build Status](https://dev.azure.com/benasradzevicius9404/PartialResponseRequest/_apis/build/status/Pack?branchName=master)](https://dev.azure.com/benasradzevicius9404/Partial%20Response%20Request/_build/latest?definitionId=8&branchName=master)
+![Azure DevOps tests with custom labels](https://img.shields.io/azure-devops/tests/benasradzevicius9404/partialresponserequest/8?label=Tests)
+![Coverage](https://img.shields.io/azure-devops/coverage/benasradzevicius9404/PartialResponseRequest/8/master?label=Coverage)
+[![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.AspNetCore.ResponsePruner)](https://www.nuget.org/packages/PartialResponseRequest.Core)
+![Nuget](https://img.shields.io/nuget/v/PartialResponseRequest.Core)
+![Nuget](https://img.shields.io/nuget/vpre/PartialResponseRequest.Core?label=nuget%20prerelease)
+
+# Partial response
 
 A simple set of libraries that enables you to parse, interpret, serialize and build simple queries for **fields** and **filters** that could be used in building flexible REST endpoints (but not limited to API):
 `https://my-app.com/animals?fields=id,photoUrl,guardian{name}&filters=id(gt:5)`
