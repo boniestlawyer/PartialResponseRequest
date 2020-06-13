@@ -19,10 +19,11 @@ Use `services.AddPartialResponse()` to add a custom json output formatter, that 
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
+    services.AddHttpContextAccessor();
     services.AddPartialResponse();
 }
 ```
-[Read more](./src/PartialResponseRequest.AspNetCore.ResponsePruner)
+[Read more](https://benasradzevicius9404.github.io/PartialResponseRequest/response-pruner.html)
 
 ### Fields Queries
 
@@ -36,15 +37,16 @@ Install-Package PartialResponseRequest.Fields
 Allows you to parse **fields** query for processing/interpreting and reacting based on it, like building a custom optimized SQL query:
 ```csharp
 var parser = new FieldsQueryParser();
-List<FieldToken> fields = parser.Parse("id,name,photoUrl");
-var interpreter = new FieldsInterpreter(fields);
+IEnumerable<FieldToken> fields = parser.Parse("id,name,photoUrl");
+var interpreter = new FieldsQueryInterpreter(fields);
 
 // Use the interpreter to build queries
-if(interpreter.Includes("id")) {
+if (interpreter.Includes("id"))
+{
     // include id field
 }
 ```
-[Read more](./src/PartialResponseRequest.Fields)
+[Read more](https://benasradzevicius9404.github.io/PartialResponseRequest/fields.html)
 
 ### Filters Queries
 
@@ -57,21 +59,23 @@ Install-Package PartialResponseRequest.Filters
 
 Allows you to parse **filters** query for processing/interpreting and reacing based on it, like building custom SQL query where clauses:
 ```csharp
-var parser = new FiltersQueryParser();
-List<FilterToken> filters = parser.Parse("created(gt:2020-01-01)");
-var interpreter = new FiltersInterpreter<MyFilters>(filters);
+var parser = new FilterQueryParser();
+IEnumerable<FilterToken> filters = parser.Parse("created(gt:2020-01-01)");
+var interpreter = new FiltersQueriesInterpreter<MyFilters>(filters.ToList());
 
-// Use the interpreter to build queries
-interpreter.HasField(x => x.Created, op => {
-    op.HandleOperator(o => o.Gt, (value, type) => {
-        // Do something for with the operator value
-    });
-})
+if (interpreter.FiltersBy(x => x.Created, out IOperatorsInterpreter<CreatedFilters> createdFilter))
+{
+    if (createdFilter.HasOperator(x => x.Gt, out OperatorValue value))
+    {
+        var parsedValue = DateTime.Parse(value.Value);
+        Console.WriteLine(parsedValue.ToString());
+    }
+}
 ```
-[Read more](./src/PartialResponseRequest.Filters)
+[Read more](https://benasradzevicius9404.github.io/PartialResponseRequest/filters.html)
 
 ## Documentation
-View the documentation [here](./src)
+View the documentation [here](https://benasradzevicius9404.github.io/PartialResponseRequest)
 
 ## Cake build tasks
 https://cakebuild.net/
