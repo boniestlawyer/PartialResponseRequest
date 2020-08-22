@@ -35,6 +35,11 @@ stages:
         path: tools
       displayName: Cache Tools packages
       
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '2.2.x'
+      
     - task: PowerShell@2
       displayName: Build & Test
       inputs:
