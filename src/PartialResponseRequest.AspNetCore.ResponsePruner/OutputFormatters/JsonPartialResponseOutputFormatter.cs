@@ -44,7 +44,7 @@ namespace PartialResponseRequest.AspNetCore.ResponsePruner.OutputFormatters
         public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
         {
             var pruner = context.HttpContext.RequestServices.GetService(typeof(IJsonPruner)) as IJsonPruner;
-            var settings = context.HttpContext.RequestServices.GetService(typeof(IOptions<MvcJsonOptions>)) as IOptions<MvcJsonOptions>;
+            var settings = context.HttpContext.RequestServices.GetService(typeof(IOptions<MvcNewtonsoftJsonOptions>)) as IOptions<MvcNewtonsoftJsonOptions>;
             var fieldsTokensProvider = context.HttpContext.RequestServices.GetService(typeof(IRequestFieldsTokensProvider)) as IRequestFieldsTokensProvider;
 
             var response = context.HttpContext.Response;

@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Moq;
 using PartialResponseRequest.AspNetCore.ResponsePruner.RequestTokenProviders;
 using PartialResponseRequest.Fields.TokenReaders.Tokens;
