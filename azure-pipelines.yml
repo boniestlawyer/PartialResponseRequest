@@ -7,6 +7,8 @@ name: '$(version)-CI-$(Date:yyyyMMdd)$(Rev:.r)'
 
 variables:
   NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
+  RevisionVersion: $[counter(format('{0}.{1}',variables['MajorVersion'],variables['MinorVersion']), 0)]
+  Version: $(MajorVersion).$(MinorVersion).$(RevisionVersion)$(VersionPostfix)
 
 trigger:
 - master
@@ -62,7 +64,7 @@ stages:
       displayName: Pack
       inputs:
         filePath: 'build.ps1'
-        arguments: '--target="Pack" --outputDirectory="$(Build.ArtifactStagingDirectory)" --package-version="$(version)"'
+        arguments: '--target="Pack" --outputDirectory="$(Build.ArtifactStagingDirectory)" --package-version="$(Version)"'
 
 
     - task: PublishBuildArtifacts@1
