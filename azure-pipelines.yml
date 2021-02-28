@@ -38,7 +38,7 @@ stages:
     - task: UseDotNet@2
       inputs:
         packageType: 'sdk'
-        version: '2.2.x'
+        version: '3.1.x'
       
     - task: PowerShell@2
       displayName: Build & Test
@@ -51,23 +51,12 @@ stages:
       inputs:
         testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit, cTest
         testResultsFiles: '$(Build.ArtifactStagingDirectory)/test-results/*.trx' 
-        #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
-        #mergeTestResults: false # Optional
-        #failTaskOnFailedTests: false # Optional
-        #testRunTitle: # Optional
-        #buildPlatform: # Optional
-        #buildConfiguration: # Optional
-        #publishRunAttachments: true # Optional
 
     - task: PublishCodeCoverageResults@1
       displayName: Publish Test Code Coverage Results
       inputs:
         codeCoverageTool: 'cobertura'
         summaryFileLocation: '$(Build.ArtifactStagingDirectory)/test-results/results.cobertura.xml'
-        #pathToSources: # Optional
-        #reportDirectory: # Optional
-        #additionalCodeCoverageFiles: # Optional
-        #failIfCoverageEmpty: false # Optional
 
     - task: PowerShell@2
       displayName: Pack
