@@ -11,10 +11,10 @@
     <Description>Core Library for ASP.NET Web API JSON partial responses</Description>
     <PackageId>PartialResponseRequest.Core</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/benasradzevicius9404/PartialResponseRequest</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/boniestlawyer/PartialResponseRequest</PackageProjectUrl>
     <PackageTags>aspnet;webapi;aspnetwebapi;web;api;json;partial;response;partialresponse;fields</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/benasradzevicius9404/PartialResponseRequest</RepositoryUrl>
+    <RepositoryUrl>https://github.com/boniestlawyer/PartialResponseRequest</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
