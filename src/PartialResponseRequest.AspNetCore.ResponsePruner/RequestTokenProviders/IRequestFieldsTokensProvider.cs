@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using PartialResponseRequest.Fields.TokenReaders.Tokens;
+﻿using PartialResponseRequest.Fields.TokenReaders.Tokens;
 
-namespace PartialResponseRequest.AspNetCore.ResponsePruner.RequestTokenProviders
+namespace PartialResponseRequest.AspNetCore.ResponsePruner.RequestTokenProviders;
+
+public interface IRequestFieldsTokensProvider
 {
-    public interface IRequestFieldsTokensProvider
-    {
-        List<FieldToken> Provide();
-    }
+    List<FieldToken>? Provide();
 }
