@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartialResponseRequest.Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartialResponseRequest.Fields", "PartialResponseRequest.Fields\PartialResponseRequest.Fields.csproj", "{31CEDE1C-E999-41FC-82FB-86471E08206C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartialResponseRequest.AspNetCore.ResponsePruner", "PartialResponseRequest.AspNetCore.ResponsePruner\PartialResponseRequest.AspNetCore.ResponsePruner.csproj", "{FB63B308-ED56-4240-8F1F-0EE1D9ECDDA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartialResponseRequest.AspNetCore.ResponsePruner", "PartialResponseRequest.AspNetCore.ResponsePruner.System.Text.Json\PartialResponseRequest.AspNetCore.ResponsePruner.System.Text.Json.csproj", "{FB63B308-ED56-4240-8F1F-0EE1D9ECDDA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
