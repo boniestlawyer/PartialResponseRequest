@@ -7,7 +7,7 @@
 
 # Partial response
 
-A simple set of libraries that enables you to parse, interpret, serialize and build simple queries for **fields** and **filters** that could be used in building flexible REST endpoints (but not limited to API):
+A simple set of libraries that enables you to parse, interpret, serialize and build simple queries for **fields** that could be used in building flexible REST endpoints (but not limited to API):
 `https://my-app.com/animals?fields=id,photoUrl,guardian{name}&filters=id(gt:5)`
 
 
@@ -19,7 +19,7 @@ A simple set of libraries that enables you to parse, interpret, serialize and bu
 
 Add a dependency using the NuGet package manager (console): 
 ```
-Install-Package PartialResponseRequest.AspNetCore.ResponsePruner
+Install-Package PartialResponseRequest.AspNetCore.ResponsePruner.System.Text.Json
 ```
 
 Use `services.AddPartialResponse()` to add a custom json output formatter, that will search for `?fields=...` query string that would be used to prune the response for the client.
@@ -54,32 +54,6 @@ if (interpreter.Includes("id"))
 }
 ```
 [Read more](https://benasradzevicius9404.github.io/PartialResponseRequest/fields.html)
-
-### Filters Queries
-
-[![Nuget](https://img.shields.io/nuget/dt/PartialResponseRequest.Filters)](https://www.nuget.org/packages/PartialResponseRequest.Filters)
-
-Add a dependency using the NuGet package manager (console):
-```
-Install-Package PartialResponseRequest.Filters
-```
-
-Allows you to parse **filters** query for processing/interpreting and reacing based on it, like building custom SQL query where clauses:
-```csharp
-var parser = new FilterQueryParser();
-IEnumerable<FilterToken> filters = parser.Parse("created(gt:2020-01-01)");
-var interpreter = new FiltersQueriesInterpreter<MyFilters>(filters.ToList());
-
-if (interpreter.FiltersBy(x => x.Created, out IOperatorsInterpreter<CreatedFilters> createdFilter))
-{
-    if (createdFilter.HasOperator(x => x.Gt, out OperatorValue value))
-    {
-        var parsedValue = DateTime.Parse(value.Value);
-        Console.WriteLine(parsedValue.ToString());
-    }
-}
-```
-[Read more](https://benasradzevicius9404.github.io/PartialResponseRequest/filters.html)
 
 ## Documentation
 View the documentation [here](https://benasradzevicius9404.github.io/PartialResponseRequest)
