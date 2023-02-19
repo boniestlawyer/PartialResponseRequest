@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PartialResponseRequest.Tests.ResponsePruner.Utils
+namespace PartialResponseRequest.Tests.ResponsePruner.Utils;
+
+public class IncludeListedPropertiesInterpreter : IFieldsQueryInterpreter
 {
-    public class IncludeListedPropertiesInterpreter : IFieldsQueryInterpreter
+    private readonly List<string> include;
+
+    public IncludeListedPropertiesInterpreter(IEnumerable<string> include)
     {
-        private readonly List<string> include;
+        this.include = include.ToList();
+    }
 
-        public IncludeListedPropertiesInterpreter(IEnumerable<string> include)
-        {
-            this.include = include.ToList();
-        }
+    public bool Includes(string fieldName)
+    {
+        return include.Contains(fieldName);
+    }
 
-        public bool Includes(string fieldName)
-        {
-            return include.Contains(fieldName);
-        }
-
-        public IFieldsQueryInterpreter Visit(string fieldName)
-        {
-            return this;
-        }
+    public IFieldsQueryInterpreter Visit(string fieldName)
+    {
+        return this;
     }
 }

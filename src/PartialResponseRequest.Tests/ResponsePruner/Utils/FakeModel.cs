@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace PartialResponseRequest.Tests.ResponsePruner.Utils
+namespace PartialResponseRequest.Tests.ResponsePruner.Utils;
+
+public class FakeModel
 {
-    public class FakeModel
-    {
-        public int Include { get; set; }
-        public int DontInclude { get; set; }
-        public List<FakeModel> Models { get; set; }
-        public FakeModel Nested { get; set; }
-    }
+    public int Include { get; set; }
+    public int DontInclude { get; set; }
+    public List<FakeModel> Models { get; set; } = default!;
+    public FakeModel Nested { get; set; } = default!;
 }

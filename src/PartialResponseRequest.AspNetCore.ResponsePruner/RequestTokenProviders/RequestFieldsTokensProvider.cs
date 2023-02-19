@@ -1,35 +1,32 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PartialResponseRequest.Fields;
 using PartialResponseRequest.Fields.TokenReaders.Tokens;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace PartialResponseRequest.AspNetCore.ResponsePruner.RequestTokenProviders
+namespace PartialResponseRequest.AspNetCore.ResponsePruner.RequestTokenProviders;
+
+public class RequestFieldsTokensProvider : IRequestFieldsTokensProvider
 {
-    public class RequestFieldsTokensProvider : IRequestFieldsTokensProvider
+    private readonly IHttpContextAccessor accessor;
+    private readonly FieldsQueryParser parser = new FieldsQueryParser();
+
+    public RequestFieldsTokensProvider(IHttpContextAccessor accessor)
     {
-        private readonly IHttpContextAccessor accessor;
-        private readonly FieldsQueryParser parser = new FieldsQueryParser();
+        this.accessor = accessor;
+    }
 
-        public RequestFieldsTokensProvider(IHttpContextAccessor accessor)
+    public List<FieldToken>? Provide()
+    {
+        var query = accessor.HttpContext.Request.Query["fields"];
+        if (string.IsNullOrEmpty(query))
         {
-            this.accessor = accessor;
+            return new List<FieldToken>();
         }
 
-        public List<FieldToken> Provide()
+        if (!accessor.HttpContext.Items.ContainsKey("field-tokens"))
         {
-            var query = accessor.HttpContext.Request.Query["fields"];
-            if (string.IsNullOrEmpty(query))
-            {
-                return new List<FieldToken>();
-            }
-
-            if (!accessor.HttpContext.Items.ContainsKey("field-tokens"))
-            {
-                accessor.HttpContext.Items["field-tokens"] = parser.Parse(query).ToList();
-            }
-
-            return accessor.HttpContext.Items["field-tokens"] as List<FieldToken>;
+            accessor.HttpContext.Items["field-tokens"] = parser.Parse(query).ToList();
         }
+
+        return accessor.HttpContext.Items["field-tokens"] as List<FieldToken>;
     }
 }

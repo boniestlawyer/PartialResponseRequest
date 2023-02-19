@@ -7,105 +7,105 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace PartialResponseRequest.Tests
+namespace PartialResponseRequest.Tests;
+
+public class FieldsQueryParserTests
 {
-    public class FieldsQueryParserTests
+    private readonly FieldsQueryParser root;
+
+    public FieldsQueryParserTests()
     {
-        private readonly FieldsQueryParser root;
+        root = new FieldsQueryParser();
+    }
 
-        public FieldsQueryParserTests()
+    private List<FieldToken> Parse(string scan)
+    {
+        return root.Parse(scan).ToList();
+    }
+
+
+    [Fact]
+    public void ParsesSingleField()
+    {
+        string scan = "animals";
+        var result = Parse(scan);
+
+        result.Should().BeEquivalentTo(new List<FieldToken>()
         {
-            root = new FieldsQueryParser();
-        }
+            new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>()),
+        });
+    }
 
-        private List<FieldToken> Parse(string scan)
+    [Fact]
+    public void ParsesSingleField_WithParameter()
+    {
+        var result = Parse("animals(page:1)");
+
+        result.Should().BeEquivalentTo(new List<FieldToken>()
         {
-            return root.Parse(scan).ToList();
-        }
+            new FieldToken("animals", new List<ParameterToken>(){
+                new ParameterToken("page", "1")
+            }, new List<FieldToken>()),
+        });
+    }
 
+    [Fact]
+    public void ParsesSingleField_WithNestedField()
+    {
+        var result = Parse("animals{name}");
 
-        [Fact]
-        public void ParsesSingleField()
+        result.Should().BeEquivalentTo(new List<FieldToken>()
         {
-            string scan = "animals";
-            var result = Parse(scan);
+            new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>(){
+                new FieldToken("name", new List<ParameterToken>(), new List<FieldToken>()),
+            })
+        });
+    }
 
-            result.Should().BeEquivalentTo(new List<FieldToken>()
-            {
-                new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>()),
-            });
-        }
+    [Fact]
+    public void ParsesSingleField_WithNestedField_AndParameter()
+    {
+        var result = Parse("animals{name(page:1)}");
 
-        [Fact]
-        public void ParsesSingleField_WithParameter()
+        result.Should().BeEquivalentTo(new List<FieldToken>()
         {
-            var result = Parse("animals(page:1)");
-
-            result.Should().BeEquivalentTo(new List<FieldToken>()
-            {
-                new FieldToken("animals", new List<ParameterToken>(){
+            new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>(){
+                new FieldToken("name", new List<ParameterToken>(){
                     new ParameterToken("page", "1")
                 }, new List<FieldToken>()),
-            });
-        }
+            })
+        });
+    }
 
-        [Fact]
-        public void ParsesSingleField_WithNestedField()
+    [Fact]
+    public void ParsesSingleField_WithMultipleNestedFields()
+    {
+        var result = Parse("animals{name,description}");
+
+        result.Should().BeEquivalentTo(new List<FieldToken>()
         {
-            var result = Parse("animals{name}");
+            new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>(){
+                new FieldToken("name", new List<ParameterToken>(), new List<FieldToken>()),
+                new FieldToken("description", new List<ParameterToken>(), new List<FieldToken>())
+            })
+        });
+    }
 
-            result.Should().BeEquivalentTo(new List<FieldToken>()
-            {
-                new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>(){
-                    new FieldToken("name", new List<ParameterToken>(), new List<FieldToken>()),
-                })
-            });
-        }
+    [Fact]
+    public void ParsesSingleField_WithMultipleNestedFields_AndParameter()
+    {
+        var result = Parse("animals{name(page:1),description}");
 
-        [Fact]
-        public void ParsesSingleField_WithNestedField_AndParameter()
+        result.Should().BeEquivalentTo(new List<FieldToken>()
         {
-            var result = Parse("animals{name(page:1)}");
-
-            result.Should().BeEquivalentTo(new List<FieldToken>()
-            {
-                new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>(){
-                    new FieldToken("name", new List<ParameterToken>(){
-                        new ParameterToken("page", "1")
-                    }, new List<FieldToken>()),
-                })
-            });
-        }
-
-        [Fact]
-        public void ParsesSingleField_WithMultipleNestedFields()
-        {
-            var result = Parse("animals{name,description}");
-
-            result.Should().BeEquivalentTo(new List<FieldToken>()
-            {
-                new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>(){
-                    new FieldToken("name", new List<ParameterToken>(), new List<FieldToken>()),
-                    new FieldToken("description", new List<ParameterToken>(), new List<FieldToken>())
-                })
-            });
-        }
-
-        [Fact]
-        public void ParsesSingleField_WithMultipleNestedFields_AndParameter()
-        {
-            var result = Parse("animals{name(page:1),description}");
-
-            result.Should().BeEquivalentTo(new List<FieldToken>()
-            {
-                new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>() {
-                    new FieldToken("name", new List<ParameterToken>(){
-                        new ParameterToken("page", "1"),
-                    }, new List<FieldToken>()),
-                    new FieldToken("description", new List<ParameterToken>(), new List<FieldToken>())
-                }),
-            });
-        }
+            new FieldToken("animals", new List<ParameterToken>(), new List<FieldToken>() {
+                new FieldToken("name", new List<ParameterToken>(){
+                    new ParameterToken("page", "1"),
+                }, new List<FieldToken>()),
+                new FieldToken("description", new List<ParameterToken>(), new List<FieldToken>())
+            }),
+        });
+    }
 
     [Fact]
     public void ParsesSingleField_WithMultipleNestedFields_AndMultipleParameters()
@@ -240,5 +240,4 @@ namespace PartialResponseRequest.Tests
                 })
             });
     }
-}
 }

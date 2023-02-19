@@ -1,73 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Microsoft.AspNetCore.Mvc.Formatters;
 using PartialResponseRequest.AspNetCore.ResponsePruner.Pruners;
 using PartialResponseRequest.AspNetCore.ResponsePruner.RequestTokenProviders;
 using PartialResponseRequest.Fields.Interpreters;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
-namespace PartialResponseRequest.AspNetCore.ResponsePruner.OutputFormatters
+namespace PartialResponseRequest.AspNetCore.ResponsePruner.OutputFormatters;
+
+public class JsonPartialResponseOutputFormatter : TextOutputFormatter
 {
-    public class JsonPartialResponseOutputFormatter : TextOutputFormatter
+    private readonly JsonSerializerOptions? _serialiserOptions;
+
+    public JsonPartialResponseOutputFormatter(JsonSerializerOptions? serialiserOptions = null)
     {
-        private JsonSerializer serializer;
+        _serialiserOptions = serialiserOptions;
+        SupportedEncodings.Add(Encoding.UTF8);
+        SupportedEncodings.Add(Encoding.Unicode);
 
-        public JsonPartialResponseOutputFormatter()
+        SupportedMediaTypes.Add("application/json");
+        SupportedMediaTypes.Add("text/json");
+        SupportedMediaTypes.Add("application/json-patch+json");
+    }
+
+    public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
+    {
+        var pruner = context.HttpContext.RequestServices.GetService(typeof(IJsonPruner)) as IJsonPruner;
+        var fieldsTokensProvider = context.HttpContext.RequestServices.GetService(typeof(IRequestFieldsTokensProvider)) as IRequestFieldsTokensProvider;
+
+        var response = context.HttpContext.Response;
+        var jsonWriter = new Utf8JsonWriter(response.Body);
+
+        var fieldsTokens = fieldsTokensProvider?.Provide();
+
+        var node =
+            System.Text.Json.JsonSerializer.SerializeToNode(context.Object, _serialiserOptions)!;
+
+        if (fieldsTokens?.Any() == true)
         {
-            SupportedEncodings.Add(Encoding.UTF8);
-            SupportedEncodings.Add(Encoding.Unicode);
-
-            SupportedMediaTypes.Add("application/json");
-            SupportedMediaTypes.Add("text/json");
-            SupportedMediaTypes.Add("application/json-patch+json");
+            pruner?.Prune(node, new FieldsQueryInterpreter(fieldsTokens));
         }
 
-        public JsonSerializer CreateJsonSerializer(JsonSerializerSettings settings) {
-            if(serializer == null)
-            {
-                serializer = JsonSerializer.Create(settings);
-            }
-            return serializer;
-        }
+        node.WriteTo(jsonWriter);
 
-        protected virtual JsonWriter CreateJsonWriter(TextWriter writer) => new JsonTextWriter(writer)
-        {
-            CloseOutput = false,
-            AutoCompleteOnClose = false
-        };
-
-        public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
-        {
-            var pruner = context.HttpContext.RequestServices.GetService(typeof(IJsonPruner)) as IJsonPruner;
-            var settings = context.HttpContext.RequestServices.GetService(typeof(IOptions<MvcNewtonsoftJsonOptions>)) as IOptions<MvcNewtonsoftJsonOptions>;
-            var fieldsTokensProvider = context.HttpContext.RequestServices.GetService(typeof(IRequestFieldsTokensProvider)) as IRequestFieldsTokensProvider;
-
-            var response = context.HttpContext.Response;
-            using (var writer = context.WriterFactory(response.Body, selectedEncoding))
-            using (var jsonWriter = CreateJsonWriter(writer))
-            {
-                var fieldsTokens = fieldsTokensProvider.Provide();
-                var serializer = CreateJsonSerializer(settings.Value.SerializerSettings);
-
-                if (fieldsTokens.Any())
-                {
-                    var tokens = JToken.FromObject(context.Object, serializer);
-                    pruner.Prune(tokens, new FieldsQueryInterpreter(fieldsTokens));
-
-                    serializer.Serialize(jsonWriter, tokens);
-                }
-                else
-                {
-                    serializer.Serialize(jsonWriter, context.Object);
-                }
-
-                await writer.FlushAsync();
-            }
-        }
+        await jsonWriter.FlushAsync();
     }
 }

@@ -1,43 +1,47 @@
-﻿using Newtonsoft.Json.Linq;
-using PartialResponseRequest.Fields.Interpreters;
+﻿using PartialResponseRequest.Fields.Interpreters;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
-namespace PartialResponseRequest.AspNetCore.ResponsePruner.Pruners
+namespace PartialResponseRequest.AspNetCore.ResponsePruner.Pruners;
+
+public class WrapperAwareJsonPruner : JsonPruner
 {
-    public class WrapperAwareJsonPruner : JsonPruner
+    private readonly string unwrap;
+
+    public WrapperAwareJsonPruner(string wrappedDataPropertyName)
     {
-        private readonly string unwrap;
+        unwrap = wrappedDataPropertyName;
+    }
 
-        public WrapperAwareJsonPruner(string wrappedDataPropertyName)
+    protected override void Prune(JsonNode node, IFieldsQueryInterpreter interpreter, int level)
+    {
+        if (level == 0 && IsWrapped(node))
         {
-            unwrap = wrappedDataPropertyName;
+            var unwrapped = Unwrap(node);
+            if (unwrapped != null)
+            {
+                base.Prune(unwrapped, interpreter, level++);
+            }
+        } else
+        {
+            base.Prune(node, interpreter, level);
         }
+    }
 
-        protected override void Prune(JToken token, IFieldsQueryInterpreter interpreter, int level)
+    private bool IsWrapped(JsonNode? jtoken)
+    {
+        if (jtoken is JsonObject jobject)
         {
-            if (level == 0 && IsWrapped(token))
+            if (jobject.ContainsKey(unwrap))
             {
-                base.Prune(Unwrap(token), interpreter, level++);
-            } else
-            {
-                base.Prune(token, interpreter, level);
+                return true;
             }
         }
+        return false;
+    }
 
-        private bool IsWrapped(JToken jtoken)
-        {
-            if (jtoken is JObject jobject)
-            {
-                if (jobject.ContainsKey(unwrap))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private JToken Unwrap(JToken jtoken)
-        {
-            return IsWrapped(jtoken) ? Unwrap(jtoken[unwrap]) : jtoken;
-        }
+    private JsonNode? Unwrap(JsonNode? jtoken)
+    {
+        return IsWrapped(jtoken) ? Unwrap(jtoken?[unwrap]) : jtoken;
     }
 }

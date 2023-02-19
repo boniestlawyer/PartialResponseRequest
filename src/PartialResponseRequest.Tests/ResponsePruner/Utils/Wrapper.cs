@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PartialResponseRequest.Tests.ResponsePruner.Utils
+namespace PartialResponseRequest.Tests.ResponsePruner.Utils;
+
+public class Wrapper<T>
 {
-    public class Wrapper<T>
-    {
-        public T Data { get; set; }
-    }
+    public T Data { get; set; } = default!;
 }
